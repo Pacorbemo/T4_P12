@@ -1,14 +1,10 @@
 const card = document.createElement("div");
 card.classList.add("card");
-const cardText = document.createElement("div");
-cardText.classList.add("card-text");
 const container = document.getElementsByClassName("container")[0];
 container.appendChild(card);
 
 const img = document.createElement("img");
 img.src = "user_nt_found.jpg";
-card.appendChild(img);
-card.appendChild(cardText);
 
 let arr = {
     Name: "name surname",
@@ -40,14 +36,15 @@ async function getTime(location){
 }
 
 function updateCard() {
-    cardText.innerHTML = "";
+    card.innerHTML = "";
+    card.appendChild(img);
     for (let prop in arr) {
         const span = document.createElement("span");
         const strong = document.createElement("strong");
         strong.textContent = prop;
         span.appendChild(strong);
         span.appendChild(document.createTextNode(`: ${arr[prop]}`));
-        cardText.appendChild(span);
+        card.appendChild(span);
     }
 }
 updateCard();
@@ -62,8 +59,6 @@ async function generateUser() {
     const results = (await response.json()).results[0];
 
     let time = await getTime(results.location.city);
-    console.log(time);
-    console.log(time.hour);
     arr = {
         Name: `${results.name.first} ${results.name.last}`,
         Mail: results.email,
@@ -71,8 +66,7 @@ async function generateUser() {
         Location: `${results.location.city}, ${results.location.country}`,
         "Current Time": `${time.hour}:${time.minute}:${time.second}`,
     };
-
-    
+    img.src = results.picture.thumbnail;
 
     updateCard();
 }

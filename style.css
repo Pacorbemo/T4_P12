@@ -49,13 +49,13 @@ img{
     padding-bottom: 2rem;
 }
 
-.card-text{
+/* .card-text{
     margin: 0;
     padding: 0;
     text-align: center;
     display: flex;
     flex-direction: column;
-}
+} */
 
 button{
     margin-top: 1rem;
