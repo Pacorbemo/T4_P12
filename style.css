@@ -54,13 +54,14 @@ img{
 button{
     margin-top: 1rem;
     border-color: white;
-    border-radius: 8px;
+    border-radius: 12px;
     border-style: solid;
     border-width: 2px;
     background-color: rgb(var(--color-1));
     color: var(--color-2);
     font-size: 16px;
-    padding: 0.3rem 0.5rem;
+    padding: 0.8rem;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 button:hover{

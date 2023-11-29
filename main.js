@@ -6,7 +6,7 @@ container.appendChild(card);
 const img = document.createElement("img");
 img.src = "user_nt_found.jpg";
 
-let arr = {
+let properties = {
     Name: "name surname",
     Mail: "mail",
     Phone: "phone",
@@ -38,12 +38,12 @@ async function getTime(location){
 function updateCard() {
     card.innerHTML = "";
     card.appendChild(img);
-    for (let prop in arr) {
+    for (let prop in properties) {
         const span = document.createElement("span");
         const strong = document.createElement("strong");
         strong.textContent = prop;
         span.appendChild(strong);
-        span.appendChild(document.createTextNode(`: ${arr[prop]}`));
+        span.appendChild(document.createTextNode(`: ${properties[prop]}`));
         card.appendChild(span);
     }
 }
@@ -59,7 +59,7 @@ async function generateUser() {
     const results = (await response.json()).results[0];
 
     let time = await getTime(results.location.city);
-    arr = {
+    properties = {
         Name: `${results.name.first} ${results.name.last}`,
         Mail: results.email,
         Phone: results.phone,
