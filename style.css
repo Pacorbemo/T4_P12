@@ -73,3 +73,8 @@ button:active{
     background-color: rgba(var(--color-1), 0.8);
 }
 
+button:disabled{
+    background-color: rgb(255, 65, 65);
+    cursor:default;
+}
+

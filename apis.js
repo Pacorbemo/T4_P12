@@ -21,7 +21,11 @@ async function getTime(location){
     }
 }
 
-export async function generateUser() { 
+export async function generateUser() {
+    const boton = document.getElementsByClassName("generate-user-button")[0];
+    console.log(boton);
+    boton.disabled = true;
+    boton.innerHTML= "LOADING USER..."
     const response = await fetch("https://randomuser.me/api/?inc=name,email,phone,picture,location");
     const results = (await response.json()).results[0];
     
@@ -30,12 +34,12 @@ export async function generateUser() {
     persona.phone = results.phone;
     persona.city = results.location.city;
     persona.country = results.location.country;
-    
+
     return persona;
 }
 
 export async function updateCard(card, persona = null) {
-    
+
     let time;
     const img = document.createElement("img");
     if(persona){
@@ -72,5 +76,10 @@ export async function updateCard(card, persona = null) {
         span.appendChild(strong);
         span.appendChild(document.createTextNode(`: ${properties[prop]}`));
         card.appendChild(span);
+    }
+    const boton = document.getElementsByClassName("generate-user-button")[0];
+    if(boton){
+        boton.innerHTML= "GENERATE USER";
+        boton.disabled = false;
     }
 }
