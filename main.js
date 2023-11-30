@@ -1,13 +1,8 @@
 import { updateCard, generateUser } from "./apis.js";
 
-function updateCardLocal() {
-    updateCard(card, img, properties);
-};
 async function generateUserLocal() {
-    const data = await generateUser(img);
-    img = data.img;
-    properties = data.properties;
-    updateCardLocal();
+    const persona = await generateUser();
+    updateCard(card, persona);
 }
 
 const container = document.getElementsByClassName("container")[0];
@@ -28,7 +23,7 @@ let properties = {
 
 //Primera recarga de información
 document.addEventListener("DOMContentLoaded", () => {
-    updateCardLocal();
+    updateCard(card);
 
     const generateUserButton = document.createElement("button");
     generateUserButton.textContent = "GENERATE USER";
