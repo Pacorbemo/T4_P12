@@ -20,7 +20,7 @@ async function getTime(location){
 }
 
 export async function generateUser(img) {
-    const response = await fetch("https://randomuser.me/api/");
+    const response = await fetch("https://randomuser.me/api/?inc=name,email,phone,picture,location");
     const results = (await response.json()).results[0];
 
     let time = await getTime(results.location.city);
@@ -48,5 +48,4 @@ export function updateCard(card, img, properties) {
         span.appendChild(document.createTextNode(`: ${properties[prop]}`));
         card.appendChild(span);
     }
-    return card;
 }
