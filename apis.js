@@ -12,7 +12,6 @@ export async function generateUser(fallos = 0) {
         if(!/^[A-Za-z]+$/.test(results.location.city)){
             return generateUser();
         }
-        
         return Person.createPerson(results);
     }catch{
         if(fallos < 5){
@@ -34,53 +33,63 @@ async function getTime(location){
     };
     try {
         const response = await fetch(url, options);
-        const result = await response.json();
-        return result;
-    } catch (error) {
+        if(response.ok){
+            return await response.json();;
+        }else{
+            return null;
+        }
+    } catch {
         return null;
     }
 }
 
 export async function updateCard(card, person = null) {
 
-    let time;
+    let properties;
     const img = document.createElement("img");
+
     if(person){
         img.src = person.img;
-        time = new Time(await getTime(person.city));
-    }else{
-        img.src = "user_nt_found.jpg";
-    }
-    card.innerHTML = "";
-    card.appendChild(img);
 
+        let time = await getTime(person.city);
+        if(time) time = new Time(time)
 
-
-    let properties = {};
-    person?
         properties = {
             Name: `${person.name} ${person.surname}`,
             Mail: person.email,
             Phone: person.phone,
             Location: `${person.city}, ${person.country}`,
-            "Current Time": time.getHourTime(),
-        } : properties = {
+            "Current Time": time?time.getHourTime():"Error"
+        };
+
+    }else{
+        img.src = "user_nt_found.jpg";
+
+        properties = {
             Name: "name surname",
             Mail: "mail",
             Phone: "phone",
             Location: "city",
             "Current Time": "time",
         };
-
-    for (let prop in properties) {
-        const span = document.createElement("span");
-        const strong = document.createElement("strong");
-        strong.textContent = prop;
-        span.appendChild(strong);
-        span.appendChild(document.createTextNode(`: ${properties[prop]}`));
-        card.appendChild(span);
     }
-    
+
+    card.innerHTML = "";
+    card.appendChild(img);
+
+    const span = document.createElement("span");
+    const strong = document.createElement("strong");
+    for (const prop in properties) {
+        //Clono los elementos para no tener que crearlos cada vez y ahorrar tiempo
+        const spanTemp = span.cloneNode();
+        const strongTemp = strong.cloneNode();
+        
+        strongTemp.textContent = prop;
+        spanTemp.appendChild(strongTemp);
+        spanTemp.appendChild(document.createTextNode(`: ${properties[prop]}`));
+        card.appendChild(spanTemp);
+    }
+
     if(document.getElementsByClassName("generate-user-button")[0]){
         buttonEnabled();
     }
