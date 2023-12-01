@@ -1,4 +1,16 @@
 import {Person} from "./Person.js";
+import {Time} from "./Time.js";
+
+export async function generateUser() {
+    const button = document.getElementsByClassName("generate-user-button")[0];
+    button.disabled = true;
+    button.innerHTML= "LOADING USER..."
+    const response = await fetch("https://randomuser.me/api/?inc=name,email,phone,picture,location");
+    const results = (await response.json()).results[0];
+    
+    return Person.createPerson(results);
+}
+ 
 async function getTime(location){
     location = location.split(" ")[0];
     const url = `https://world-time-by-api-ninjas.p.rapidapi.com/v1/worldtime?city=${location}`;
@@ -10,7 +22,6 @@ async function getTime(location){
             "X-RapidAPI-Host": "world-time-by-api-ninjas.p.rapidapi.com",
         },
     };
-
     try {
         const response = await fetch(url, options);
         const result = await response.json();
@@ -21,30 +32,13 @@ async function getTime(location){
     }
 }
 
-export async function generateUser() {
-    const button = document.getElementsByClassName("generate-user-button")[0];
-    console.log(button);
-    button.disabled = true;
-    button.innerHTML= "LOADING USER..."
-    const response = await fetch("https://randomuser.me/api/?inc=name,email,phone,picture,location");
-    const results = (await response.json()).results[0];
-    
-    const person = new Person(results.name.first, results.name.last, results.email);
-    person.img = results.picture.thumbnail;
-    person.phone = results.phone;
-    person.city = results.location.city;
-    person.country = results.location.country;
-
-    return person;
-}
-
 export async function updateCard(card, person = null) {
 
     let time;
     const img = document.createElement("img");
     if(person){
         img.src = person.img;
-        time = await getTime(person.city);
+        time = new Time(await getTime(person.city));
     }else{
         img.src = "user_nt_found.jpg";
     }
@@ -60,7 +54,7 @@ export async function updateCard(card, person = null) {
             Mail: person.email,
             Phone: person.phone,
             Location: `${person.city}, ${person.country}`,
-            "Current Time": `${time.hour}:${time.minute}:${time.second}`,
+            "Current Time": time.getHourTime(),
         } : properties = {
             Name: "name surname",
             Mail: "mail",
