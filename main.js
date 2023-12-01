@@ -6,7 +6,6 @@ async function generateUserLocal() {
         updateCard(card, person);
     }else{
         alert("No se ha podido generar un usuario");
-        const button = document.getElementsByClassName("generate-user-button")[0];
         buttonEnabled();
     }
 }
