@@ -1,8 +1,14 @@
-import { updateCard, generateUser } from "./apis.js";
+import { updateCard, generateUser, buttonEnabled } from "./apis.js";
 
 async function generateUserLocal() {
     const person = await generateUser();
-    updateCard(card, person);
+    if (person){
+        updateCard(card, person);
+    }else{
+        alert("No se ha podido generar un usuario");
+        const button = document.getElementsByClassName("generate-user-button")[0];
+        buttonEnabled();
+    }
 }
 
 const card = document.createElement("div");
@@ -20,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const generateUserButton = document.createElement("button");
     generateUserButton.classList.add("generate-user-button");
-    generateUserButton.textContent = "GENERATE USER";
-    generateUserButton.addEventListener("click", generateUserLocal);
     container.appendChild(generateUserButton);
+    generateUserButton.addEventListener("click", generateUserLocal);
+    buttonEnabled();
 });
