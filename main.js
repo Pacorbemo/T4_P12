@@ -1,8 +1,8 @@
 import { updateCard, generateUser } from "./apis.js";
 
 async function generateUserLocal() {
-    const persona = await generateUser();
-    updateCard(card, persona);
+    const person = await generateUser();
+    updateCard(card, person);
 }
 
 const card = document.createElement("div");

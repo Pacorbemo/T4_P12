@@ -1,4 +1,4 @@
-import {Persona} from "./Persona.js";
+import {Person} from "./Person.js";
 async function getTime(location){
     location = location.split(" ")[0];
     const url = `https://world-time-by-api-ninjas.p.rapidapi.com/v1/worldtime?city=${location}`;
@@ -22,29 +22,29 @@ async function getTime(location){
 }
 
 export async function generateUser() {
-    const boton = document.getElementsByClassName("generate-user-button")[0];
-    console.log(boton);
-    boton.disabled = true;
-    boton.innerHTML= "LOADING USER..."
+    const button = document.getElementsByClassName("generate-user-button")[0];
+    console.log(button);
+    button.disabled = true;
+    button.innerHTML= "LOADING USER..."
     const response = await fetch("https://randomuser.me/api/?inc=name,email,phone,picture,location");
     const results = (await response.json()).results[0];
     
-    const persona = new Persona(results.name.first, results.name.last, results.email);
-    persona.img = results.picture.thumbnail;
-    persona.phone = results.phone;
-    persona.city = results.location.city;
-    persona.country = results.location.country;
+    const person = new Person(results.name.first, results.name.last, results.email);
+    person.img = results.picture.thumbnail;
+    person.phone = results.phone;
+    person.city = results.location.city;
+    person.country = results.location.country;
 
-    return persona;
+    return person;
 }
 
-export async function updateCard(card, persona = null) {
+export async function updateCard(card, person = null) {
 
     let time;
     const img = document.createElement("img");
-    if(persona){
-        img.src = persona.img;
-        time = await getTime(persona.city);
+    if(person){
+        img.src = person.img;
+        time = await getTime(person.city);
     }else{
         img.src = "user_nt_found.jpg";
     }
@@ -54,12 +54,12 @@ export async function updateCard(card, persona = null) {
 
 
     let properties = {};
-    persona?
+    person?
         properties = {
-            Name: `${persona.name} ${persona.surname}`,
-            Mail: persona.email,
-            Phone: persona.phone,
-            Location: `${persona.city}, ${persona.country}`,
+            Name: `${person.name} ${person.surname}`,
+            Mail: person.email,
+            Phone: person.phone,
+            Location: `${person.city}, ${person.country}`,
             "Current Time": `${time.hour}:${time.minute}:${time.second}`,
         } : properties = {
             Name: "name surname",
@@ -77,9 +77,9 @@ export async function updateCard(card, persona = null) {
         span.appendChild(document.createTextNode(`: ${properties[prop]}`));
         card.appendChild(span);
     }
-    const boton = document.getElementsByClassName("generate-user-button")[0];
-    if(boton){
-        boton.innerHTML= "GENERATE USER";
-        boton.disabled = false;
+    const button = document.getElementsByClassName("generate-user-button")[0];
+    if(button){
+        button.innerHTML= "GENERATE USER";
+        button.disabled = false;
     }
 }
