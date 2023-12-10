@@ -12,7 +12,12 @@ export async function generateUser(fallos = 0) {
         if(!/^[A-Za-z]+$/.test(results.location.city)){
             return generateUser();
         }
-        return Person.createPerson(results);
+        const person = new Person(results.name.first, results.name.last, results.email)
+        person.img = results.picture.thumbnail;
+        person.phone = results.phone;
+        person.city = results.location.city;
+        person.country = results.location.country;
+        return person;
     }catch{
         if(fallos < 5){
             return generateUser(fallos + 1);

@@ -55,14 +55,4 @@ export class Person {
     get country(){
         return this.country;
     }
-
-    static createPerson(results){
-        const person = new Person(results.name.first, results.name.last, results.email);
-        person.img = results.picture.thumbnail;
-        person.phone = results.phone;
-        person.city = results.location.city;
-        person.country = results.location.country;
-
-        return person;
-    }
 }
